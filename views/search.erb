@@ -1,33 +1,35 @@
 <section class="center-vertical">
 	<h1>検索フォーム</h1>
 	<form>
-		<input type="" name="" placeholder="キーワード">
+		<input type="text" name="keyword" placeholder="キーワード">
 		<input type="submit" value="検索">
 	</form>
 	<h2>検索結果</h2>
-
-		<div class="center-horizontal">
-
-				<div class="post center-vertical">
-					<img src="" width="125" height="125">
-					<p>アーティスト: 〇〇</p>
-					<p>アルバム: 〇〇</p>
-					<p>曲名: 〇〇</p>
-					<p><a href="#">サンプル</a></p>
-					<form>
-						<input type="" value="" name="">
-						<input type="" value="" name="">
-						<input type="" value="" name="">
-						<input type="" value="" name="">
-						<input type="" value="" name="">
-						<input type="" name="" placeholder="コメント">
-						<input type="submit" value="投稿">
-					</form>
+		<% if !@music.nil? %>
+			<% if @music["resultCount"] > 0 %>
+				<div class="center-horizontal">
+					<% @music["results"].each do |music| %>
+						<div class="post center-vertical">
+							<img src="<%= music["artworkUrl100"] %>" width="125" height="125">
+							<p>アーティスト: <%= music["artistName"] %></p>
+							<p>アルバム: <%= music["collectionName"] %></p>
+							<p>曲名: <%= music["trackName"] %></p>
+							<p><a href="<%= music["previewUrl"] %>">サンプル</a></p>
+							<form action="/mypost/add" method="post">
+								<input type="hidden" name="image_url" value="<%= music["artworkUrl100"] %>">
+								<input type="hidden" name="artist" value="<%= music["artistName"] %>">
+								<input type="hidden" name="album" value="<%= music["collectionName"] %>">
+								<input type="hidden" name="music" value="<%= music["trackName"] %>">
+								<input type="hidden" name="sample" value="<%= music["previewUrl"] %>">
+								<input type="text" name="comment" placeholder="コメント">
+								<input type="submit" value="投稿">
+							</form>
+						</div>
+					<% end %>
+		
 				</div>
-
-		</div>
-
-	<%# TODO: 検索結果によって分岐 %>
-	<p>検索結果がありません</p>
-
+			<% else %>
+				<p>検索結果がありません</p>
+			<% end %>
+		<% end %>
 </section>

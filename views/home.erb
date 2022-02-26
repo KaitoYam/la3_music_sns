@@ -1,18 +1,42 @@
 <section class="center-vertical">
-	<h1>〇〇の投稿</h1>
-	<p>投稿がありません</p>
+	<h1><%= current_user.name %>さんの投稿</h1>
+	<% if !@posts.nil? %>
+		<% logger.info(@posts.length) %>
+		<% @posts.each do |post| %>
+			<% if !post.id.nil? %>
+				<div class="post center-vertical">
+					<img src="<%= post["image_url"] %>" width="125" height="125">
+					<p>アーティスト: <%= post["artist"] %></p>
+					<p>アルバム: <%= post["album"] %></p>
+					<p>曲名: <%= post["music"] %></p>
+					<p>コメント: <%= post["comment"] %></p>
+					<p>投稿者: <%= post.user.name %></p>
+					<p>いいねしたユーザー: </p>
+					<p><a href="<%= post["sample"] %>">サンプル</a></p>
+					<form action="/mypost/<%= post.id %>/delete" method="post">
+						<input type="submit" value="削除">
+					</form>
+					<form action="/mypost/<%= post.id %>/edit" method="get">
+						<input type="submit" value="編集">
+					</form>
+				</div>
+			<% end %>
+		<% end %>
+	<% else %>
+		<p>投稿がありません</p>
+	<% end %>
 </section>
 
 <section class="center-vertical">
-	<h1>〇〇のイイねした投稿</h1>
+	<h1><%= current_user.name %>さんのイイねした投稿</h1>
 	<p>イイねがありません</p>
 </section>
 
 <section class="center-vertical">
-	<h1>〇〇のフォロー</h1>
+	<h1><%= current_user.name %>さんのフォロー</h1>
 	<a href="#">フォロー解除</a><br>
 </section>
 
 <section class="center-vertical">
-	<h1>〇〇のフォロワー</h1>
+	<h1><%= current_user.name %>さんのフォロワー</h1>
 </section>

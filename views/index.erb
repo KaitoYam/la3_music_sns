@@ -1,29 +1,54 @@
 <section class="first-view center-vertical">
 	<h1>MUSIC SNS!!!</h1>
-	<div class="login_button">
-	</div>
+	<%= session[:user] %>
+	<% if current_user.nil? %>
+		<div class="login_button">
+			<form action="/signin" action="get">
+				<input type="text" name="name" placeholder="ユーザー名"><br>
+				<input type="password" name="password" placeholder="パスワード"><br>
+				<input type="submit" value="Sign in">
+			</form>
+		</div>
+	<% end %>
+	
 </section>
 
 <section class="center-vertical">
 	<h1>最新の投稿</h1>
-
-	<div class="post center-vertical">
-		<img src="" width="125" height="125">
-		<p>アーティスト: 〇〇</p>
-		<p>アルバム: 〇〇</p>
-		<p>曲名: 〇〇</p>
-		<p><a href="#">サンプル</a></p>
-		<p>コメント: 〇〇</p>
-		<p>投稿者: 〇〇</p>
-		<a href="#">フォローする</a>
-		<a href="#">フォロー解除</a>
-		<p>いいねしたユーザー</p>
-		<div class="user-box">
-			<img src="" alt="user_image" width="40" height="40">
-		</div>
-		<a href="#">いいねする</a>
-	</div>
-
-	<%# TODO: ここで分岐 %>
-	<p>投稿がありません</p>
+	<% if !@posts.nil? %>
+		<% logger.info(@posts.length) %>
+		<% @posts.each do |post| %>
+			<% if !post.id.nil? %>
+				<div class="post center-vertical">
+					<img src="<%= post["image_url"] %>" width="125" height="125">
+					<p>アーティスト: <%= post["artist"] %></p>
+					<p>アルバム: <%= post["album"] %></p>
+					<p>曲名: <%= post["music"] %></p>
+					<p>コメント: <%= post["comment"] %></p>
+					<p>投稿者: <%= post.user["name"] %></p>
+					<p>いいねしたユーザー: </p>
+					<p><a href="<%= post["sample"] %>">サンプル</a></p>
+				</div>
+			<% end %>
+		<% end %>
+	<% else %>
+		<p>投稿がありません</p>
+	<% end %>
 </section>
+
+	<!--<div class="post center-vertical">-->
+	<!--	<img src="" width="125" height="125">-->
+	<!--	<p>アーティスト: 〇〇</p>-->
+	<!--	<p>アルバム: 〇〇</p>-->
+	<!--	<p>曲名: 〇〇</p>-->
+	<!--	<p><a href="#">サンプル</a></p>-->
+	<!--	<p>コメント: 〇〇</p>-->
+	<!--	<p>投稿者: 〇〇</p>-->
+	<!--	<a href="#">フォローする</a>-->
+	<!--	<a href="#">フォロー解除</a>-->
+	<!--	<p>いいねしたユーザー</p>-->
+	<!--	<div class="user-box">-->
+	<!--		<img src="" alt="user_image" width="40" height="40">-->
+	<!--	</div>-->
+	<!--	<a href="#">いいねする</a>-->
+	<!--</div>-->
