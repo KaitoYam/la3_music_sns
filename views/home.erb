@@ -12,6 +12,9 @@
 					<p>コメント: <%= post["comment"] %></p>
 					<p>投稿者: <%= post.user.name %></p>
 					<p>いいねしたユーザー: </p>
+					<% post.likes.each do |like_user| %>
+						<a href="/mypage"><img src="<%= like_user.user.user_image_url %>" alt="user_image" width="40" height="40"></a>
+					<% end %>
 					<p><a href="<%= post["sample"] %>">サンプル</a></p>
 					<form action="/mypost/<%= post.id %>/delete" method="post">
 						<input type="submit" value="削除">
@@ -29,7 +32,25 @@
 
 <section class="center-vertical">
 	<h1><%= current_user.name %>さんのイイねした投稿</h1>
-	<p>イイねがありません</p>
+	<% if !@like_posts.nil? %>
+		<% @like_posts.each do |like_post| %>
+			<div class="post center-vertical">
+				<img src="<%= like_post.post["image_url"] %>" width="125" height="125">
+				<p>アーティスト: <%= like_post.post["artist"] %></p>
+				<p>アルバム: <%= like_post.post["album"] %></p>
+				<p>曲名: <%= like_post.post["music"] %></p>
+				<p>コメント: <%= like_post.post["comment"] %></p>
+				<p>投稿者: <%= like_post.post.user.name %></p>
+				<p>いいねしたユーザー: </p>
+				<% like_post.post.likes.each do |like_user| %>
+					<a href="/mypage"><img src="<%= like_user.user.user_image_url %>" alt="user_image" width="40" height="40"></a>
+				<% end %>
+				<p><a href="<%= like_post.post["sample"] %>">サンプル</a></p>
+			</div>
+		<% end %>
+	<% else %>
+		<p>イイねがありません</p>
+	<% end %>
 </section>
 
 <section class="center-vertical">

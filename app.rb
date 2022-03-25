@@ -90,6 +90,7 @@ get '/mypage' do
         @posts = Post.none
     else
         @posts = current_user.posts
+        @like_posts = current_user.likes
     end
     erb :home
 end
@@ -126,4 +127,24 @@ post '/mypost/:id/edit' do
     post.comment = params[:comment]
     post.save
     redirect '/mypage'
+end
+
+
+get '/post/:post_id/like' do
+    if Like.find_by(user_id: session[:user], post_id: params[:post_id]).nil?
+        Like.create(
+            post_id: params[:post_id],
+            user_id: session[:user]
+        )
+        redirect '/'
+    end
+    redirect '/'
+end
+
+get '/post/:post_id/unlike' do
+    target = Like.find_by(user_id: session[:user], post_id: params[:post_id])
+    if !target.nil?
+        target.destroy
+    end
+    redirect '/'
 end

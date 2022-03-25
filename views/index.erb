@@ -24,10 +24,18 @@
 					<p>アーティスト: <%= post["artist"] %></p>
 					<p>アルバム: <%= post["album"] %></p>
 					<p>曲名: <%= post["music"] %></p>
+					<p><a href="<%= post["sample"] %>">サンプル</a></p>
 					<p>コメント: <%= post["comment"] %></p>
 					<p>投稿者: <%= post.user["name"] %></p>
 					<p>いいねしたユーザー: </p>
-					<p><a href="<%= post["sample"] %>">サンプル</a></p>
+					<% post.likes.each do |like_user| %>
+						<a href="/mypage"><img src="<%= like_user.user.user_image_url %>" alt="user_image" width="40" height="40"></a>
+					<% end %>
+					<% if post.likes.find_by(user_id: session[:user]).nil? %>
+						<a href="post/<%= post.id %>/like">いいねする</a>
+					<% else %>
+						<a href="post/<%= post.id%>/unlike">いいね解除する</a>
+					<% end %>
 				</div>
 			<% end %>
 		<% end %>
@@ -35,20 +43,3 @@
 		<p>投稿がありません</p>
 	<% end %>
 </section>
-
-	<!--<div class="post center-vertical">-->
-	<!--	<img src="" width="125" height="125">-->
-	<!--	<p>アーティスト: 〇〇</p>-->
-	<!--	<p>アルバム: 〇〇</p>-->
-	<!--	<p>曲名: 〇〇</p>-->
-	<!--	<p><a href="#">サンプル</a></p>-->
-	<!--	<p>コメント: 〇〇</p>-->
-	<!--	<p>投稿者: 〇〇</p>-->
-	<!--	<a href="#">フォローする</a>-->
-	<!--	<a href="#">フォロー解除</a>-->
-	<!--	<p>いいねしたユーザー</p>-->
-	<!--	<div class="user-box">-->
-	<!--		<img src="" alt="user_image" width="40" height="40">-->
-	<!--	</div>-->
-	<!--	<a href="#">いいねする</a>-->
-	<!--</div>-->
